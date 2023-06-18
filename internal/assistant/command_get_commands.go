@@ -16,7 +16,7 @@ func (a *GetCommandsAction) Execute(ctx context.Context, evt *events.Message) er
 	message := "List of available commands (use '%' for command prefix)\n\n"
 
 	for key, command := range a.getCommands() {
-		message += fmt.Sprintf("%c%s: %s\n", commandPrefix, key, command.Description)
+		message += fmt.Sprintf("%c%s: %s\n", COMMAND_PREFIX, key, command.Description)
 	}
 
 	_, err := a.client.SendMessage(ctx, evt.Info.Chat, &proto.Message{

@@ -12,13 +12,7 @@ func (wa *WhatsAppAssistant) handleCommands(ctx context.Context) whatsmeow.Event
 	return func(evt interface{}) {
 		switch v := evt.(type) {
 		case *events.Message:
-			message := v.Message.GetConversation()
-			if message == "" {
-				if v.Message.GetExtendedTextMessage().Text == nil {
-					return
-				}
-				message = *v.Message.GetExtendedTextMessage().Text
-			}
+			message := getMessage(v)
 			commands := extractCommands(message)
 
 			for _, command := range commands {
@@ -31,11 +25,21 @@ func (wa *WhatsAppAssistant) handleCommands(ctx context.Context) whatsmeow.Event
 	}
 }
 
+func getMessage(evt *events.Message) string {
+	if evt.Message.GetConversation() != "" {
+		return evt.Message.GetConversation()
+	}
+	if evt.Message.GetExtendedTextMessage().Text != nil {
+		return evt.Message.GetExtendedTextMessage().GetText()
+	}
+	return ""
+}
+
 func extractCommands(message string) []string {
 	words := strings.Split(message, " ")
 	commands := []string{}
 	for _, word := range words {
-		if word[0] == commandPrefix {
+		if word[0] == COMMAND_PREFIX {
 			commands = append(commands, word[1:])
 		}
 	}

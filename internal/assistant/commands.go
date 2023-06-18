@@ -11,7 +11,11 @@ type Command struct {
 	Action      commandAction
 }
 
-const commandPrefix = '%'
+const (
+	COMMAND_PREFIX      = '%'
+	COMMAND_COMMANDS    = "commands"
+	COMMAND_ASSIGN_ROLE = "assign"
+)
 
 type commandAction interface {
 	Execute(ctx context.Context, evt *events.Message) error
@@ -19,9 +23,13 @@ type commandAction interface {
 
 func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 	return map[string]*Command{
-		"commands": {
+		COMMAND_COMMANDS: {
 			Description: "Get All Commands",
 			Action:      &GetCommandsAction{wa},
+		},
+		COMMAND_ASSIGN_ROLE: {
+			Description: "Assign role to mentioned members",
+			Action:      &AssignRoleAction{wa},
 		},
 	}
 }

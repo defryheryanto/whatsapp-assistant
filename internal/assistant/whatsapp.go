@@ -10,21 +10,24 @@ import (
 	"go.mau.fi/whatsmeow"
 )
 
-type Roles struct {
+type Role struct {
 	Name       string
 	MemberJIDs []string
 }
 
 type WhatsAppAssistantRepository interface {
-	InsertRole()
+	FindRole(ctx context.Context, name string) (*Role, error)
+	DeleteRole(ctx context.Context, name string) error
+	InsertRole(ctx context.Context, data *Role) error
 }
 
 type WhatsAppAssistant struct {
-	client *whatsmeow.Client
+	client     *whatsmeow.Client
+	repository WhatsAppAssistantRepository
 }
 
-func NewWhatsAppAssistant(client *whatsmeow.Client) *WhatsAppAssistant {
-	return &WhatsAppAssistant{client}
+func NewWhatsAppAssistant(client *whatsmeow.Client, repository WhatsAppAssistantRepository) *WhatsAppAssistant {
+	return &WhatsAppAssistant{client, repository}
 }
 
 func (wa *WhatsAppAssistant) Start(ctx context.Context) {
