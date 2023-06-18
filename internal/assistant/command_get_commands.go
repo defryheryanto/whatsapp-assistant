@@ -15,8 +15,8 @@ type GetCommandsAction struct {
 func (a *GetCommandsAction) Execute(ctx context.Context, evt *events.Message) error {
 	message := "List of available commands (use '%' for command prefix)\n\n"
 
-	for key, command := range a.getCommands() {
-		message += fmt.Sprintf("%c%s: %s\n", COMMAND_PREFIX, key, command.Description)
+	for _, command := range a.getCommands() {
+		message += fmt.Sprintf("%s: %s\n", command.Format, command.Description)
 	}
 
 	_, err := a.client.SendMessage(ctx, evt.Info.Chat, &proto.Message{

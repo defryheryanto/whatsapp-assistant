@@ -8,6 +8,7 @@ import (
 )
 
 type Command struct {
+	Format      string
 	Description string
 	Action      commandAction
 }
@@ -26,21 +27,24 @@ type commandAction interface {
 func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 	return map[string]*Command{
 		COMMAND_COMMANDS: {
+			Format:      commandFormat(COMMAND_COMMANDS),
 			Description: "Get All Commands",
 			Action:      &GetCommandsAction{wa},
 		},
 		COMMAND_ASSIGN_ROLE: {
+			Format:      fmt.Sprintf("%s [role name] [@member1 @member2 @member3 ...]", commandFormat(COMMAND_ASSIGN_ROLE)),
 			Description: "Assign role to mentioned members",
 			Action: &AssignRoleAction{
 				WhatsAppAssistant: wa,
-				Command:           fmt.Sprintf("%c%s", COMMAND_PREFIX, COMMAND_ASSIGN_ROLE),
+				Command:           commandFormat(COMMAND_ASSIGN_ROLE),
 			},
 		},
 		COMMAND_CALL_ROLE: {
+			Format:      fmt.Sprintf("%s [role name]", commandFormat(COMMAND_CALL_ROLE)),
 			Description: "Mention members of called role",
 			Action: &CallRoleAction{
 				WhatsAppAssistant: wa,
-				Command:           fmt.Sprintf("%c%s", COMMAND_PREFIX, COMMAND_CALL_ROLE),
+				Command:           commandFormat(COMMAND_CALL_ROLE),
 			},
 		},
 	}
@@ -52,4 +56,8 @@ func (wa *WhatsAppAssistant) getCommandAction(command string) commandAction {
 		return nil
 	}
 	return result.Action
+}
+
+func commandFormat(command string) string {
+	return fmt.Sprintf("%c%s", COMMAND_PREFIX, command)
 }
