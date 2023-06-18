@@ -2,7 +2,6 @@ package assistant
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"go.mau.fi/whatsmeow/types/events"
@@ -10,6 +9,7 @@ import (
 
 type AssignRoleAction struct {
 	*WhatsAppAssistant
+	Command string
 }
 
 func (a *AssignRoleAction) Execute(ctx context.Context, evt *events.Message) error {
@@ -41,13 +41,12 @@ func (a *AssignRoleAction) Execute(ctx context.Context, evt *events.Message) err
 }
 
 func (a *AssignRoleAction) extractRoleName(evt *events.Message) string {
-	command := fmt.Sprintf("%c%s", COMMAND_PREFIX, COMMAND_ASSIGN_ROLE)
 	message := getMessage(evt)
 
 	roleName := ""
 	words := strings.Split(message, " ")
 	for i := 1; i < len(words); i++ {
-		if words[i-1] == command {
+		if words[i-1] == a.Command {
 			roleName = words[i]
 		}
 	}

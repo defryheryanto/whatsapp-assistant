@@ -31,7 +31,10 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 		},
 		COMMAND_ASSIGN_ROLE: {
 			Description: "Assign role to mentioned members",
-			Action:      &AssignRoleAction{wa},
+			Action: &AssignRoleAction{
+				WhatsAppAssistant: wa,
+				Command:           fmt.Sprintf("%c%s", COMMAND_PREFIX, COMMAND_ASSIGN_ROLE),
+			},
 		},
 		COMMAND_CALL_ROLE: {
 			Description: "Mention members of called role",
