@@ -2,6 +2,7 @@ package assistant
 
 import (
 	"context"
+	"fmt"
 
 	"go.mau.fi/whatsmeow/types/events"
 )
@@ -15,6 +16,7 @@ const (
 	COMMAND_PREFIX      = '%'
 	COMMAND_COMMANDS    = "commands"
 	COMMAND_ASSIGN_ROLE = "assign"
+	COMMAND_CALL_ROLE   = "call"
 )
 
 type commandAction interface {
@@ -30,6 +32,13 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 		COMMAND_ASSIGN_ROLE: {
 			Description: "Assign role to mentioned members",
 			Action:      &AssignRoleAction{wa},
+		},
+		COMMAND_CALL_ROLE: {
+			Description: "Mention members of called role",
+			Action: &CallRoleAction{
+				WhatsAppAssistant: wa,
+				Command:           fmt.Sprintf("%c%s", COMMAND_PREFIX, COMMAND_CALL_ROLE),
+			},
 		},
 	}
 }
