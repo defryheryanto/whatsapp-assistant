@@ -11,18 +11,18 @@ Your WhatsApp Assistant
 1. Install [Go](https://go.dev/doc/install)
 2. Install [Golang Migrate CLI](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#migrate-cli)
 3. Run `go install -tags 'sqlite3' github.com/golang-migrate/migrate/v4/cmd/migrate@latest`
-4. Run `migrate -database sqlite3://whatsapp_assistant.db -path db/migrations up`
 
 ## Running the application
 1. Clone the repository
-2. Run `go run ./cmd/app/...` from the root project path
-3. Copy the QRCode text from the terminal<br>
+2. Run `migrate -database sqlite3://whatsapp_assistant.db -path db/migrations up`
+3. Run `go run ./cmd/app/...` from the root project path
+4. Copy the QRCode text from the terminal<br>
 Example:
 ![Screenshot 2023-06-18 165516](https://github.com/defryheryanto/whatsapp-assistant/assets/75387883/8ff376a2-8c6f-4b58-921c-41cc0cb32089)
-4. Open https://www.the-qrcode-generator.com/ and navigate to 'Free Text' tab
-5. Paste the QR Code text
-6. Scan the generated QR from your WhatsApp
-7. Done! Use commands or features from inside the chat
+5. Open https://www.the-qrcode-generator.com/ and navigate to 'Free Text' tab
+6. Paste the QR Code text
+7. Scan the generated QR from your WhatsApp
+8. Done! Use commands or features from inside the chat
 
 ## How to use
 1. Invite your WhatsApp Account (Scanned the generated QR) to any groups
