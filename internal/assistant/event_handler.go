@@ -24,7 +24,7 @@ func (wa *WhatsAppAssistant) handleCommands(ctx context.Context) whatsmeow.Event
 			for _, command := range commands {
 				action := wa.getCommandAction(command)
 				if action != nil {
-					action(ctx, v)
+					action.Execute(ctx, v)
 				}
 			}
 		}
