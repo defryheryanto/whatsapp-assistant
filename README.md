@@ -10,3 +10,6 @@ Example:
 4. Paste the QR Code text
 5. Scan the generated QR from your WhatsApp
 6. Done! Use commands or features from inside the chat
+
+## Available WhatsApp Commands (Command Prefix: `%`)
+1. `%commands` -> Output all available commands
