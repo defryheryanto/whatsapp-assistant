@@ -32,7 +32,7 @@ func getCommandAction(command string) commandAction {
 }
 
 func getAvailableCommands(ctx context.Context, client *whatsmeow.Client, evt *events.Message) error {
-	message := ""
+	message := "List of available commands (use '%' for command prefix)\n\n"
 
 	for key, command := range getCommands() {
 		message += fmt.Sprintf("%c%s: %s\n", commandPrefix, key, command.Description)

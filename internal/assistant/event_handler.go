@@ -2,6 +2,7 @@ package assistant
 
 import (
 	"context"
+	"log"
 	"strings"
 
 	"go.mau.fi/whatsmeow"
@@ -13,6 +14,7 @@ func (wa *WhatsAppAssistant) handleCommands(ctx context.Context) whatsmeow.Event
 		switch v := evt.(type) {
 		case *events.Message:
 			message := v.Message.GetConversation()
+			log.Printf("Received a message: %s\n", message)
 			commands := extractCommands(message)
 
 			for _, command := range commands {
@@ -29,6 +31,7 @@ func extractCommands(message string) []string {
 	words := strings.Split(message, " ")
 	commands := []string{}
 	for _, word := range words {
+		log.Println(word)
 		if word[0] == commandPrefix {
 			commands = append(commands, word[1:])
 		}
