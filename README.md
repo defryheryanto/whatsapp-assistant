@@ -15,10 +15,9 @@ Your WhatsApp Assistant
 ## Running the application
 1. Clone the repository
 2. Run `migrate -database sqlite3://whatsapp_assistant.db -path db/migrations up`
+
 3. Run `go run ./cmd/app/...` from the root project path
-4. Copy the QRCode text from the terminal<br>
-Example:
-![Screenshot 2023-06-18 165516](https://github.com/defryheryanto/whatsapp-assistant/assets/75387883/8ff376a2-8c6f-4b58-921c-41cc0cb32089)
+4. Copy the QRCode text from the terminal
 5. Open https://www.the-qrcode-generator.com/ and navigate to 'Free Text' tab
 6. Paste the QR Code text
 7. Scan the generated QR from your WhatsApp
