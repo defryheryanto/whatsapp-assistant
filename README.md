@@ -1,15 +1,60 @@
 # WhatsApp Assistant
 Your WhatsApp Assistant
 
+## Features
+### WhatsApp Commands (Command Prefix: `%`)
+1. `%commands`: Get All Commands
+2. `%assign [role name] [@member1 @member2 @member3 ...]`: Assign role to mentioned members
+3. `%call [role name]`: Mention members of the called role
+
+## Setup
+1. Install [Go](https://go.dev/doc/install)
+2. Install [Golang Migrate CLI](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#migrate-cli)
+3. Run `go install -tags 'sqlite3' github.com/golang-migrate/migrate/v4/cmd/migrate@latest`
+4. Run `migrate -database sqlite3://whatsapp_assistant.db -path db/migrations up`
+
 ## Running the application
-1. Run `go run ./cmd/app/...` from the root project path
-2. Copy the QRCode text from the terminal<br>
+1. Clone the repository
+2. Run `go run ./cmd/app/...` from the root project path
+3. Copy the QRCode text from the terminal<br>
 Example:
 ![Screenshot 2023-06-18 165516](https://github.com/defryheryanto/whatsapp-assistant/assets/75387883/8ff376a2-8c6f-4b58-921c-41cc0cb32089)
-3. Open https://www.the-qrcode-generator.com/ and navigate to 'Free Text' tab
-4. Paste the QR Code text
-5. Scan the generated QR from your WhatsApp
-6. Done! Use commands or features from inside the chat
+4. Open https://www.the-qrcode-generator.com/ and navigate to 'Free Text' tab
+5. Paste the QR Code text
+6. Scan the generated QR from your WhatsApp
+7. Done! Use commands or features from inside the chat
 
-## Available WhatsApp Commands (Command Prefix: `%`)
-1. `%commands` -> Output all available commands
+## How to use
+1. Invite your WhatsApp Account (Scanned the generated QR) to any groups
+2. Trigger the command by chat inside the group
+3. Command will be triggered!
+
+## Debugging the application (VS Code)
+1. Add this code to your `.vscode/launch.json`
+```
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Package",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/app"
+        }
+    ]
+}
+2. Press the debug button (F5 on windows)
+```
+
+## Disclaimer
+It is important to note that utilizing a bot for WhatsApp can result in the suspension or banning of your WhatsApp account. Therefore, I strongly recommend refraining from using your primary WhatsApp account and using a secondary account instead to mitigate any potential risks<br>
+Until now (19 June 2023) the possible reasons for your account getting banned are these:
+1. `too many people blocked you`
+2. `you sent too many messages to people who don't have you in their address books`
+3. `you created too many groups with people who don't have you in their address books`
+4. `you sent the same message to too many people`
+5. `you sent too many messages to a broadcast list`
