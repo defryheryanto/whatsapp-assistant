@@ -10,6 +10,15 @@ import (
 	"go.mau.fi/whatsmeow"
 )
 
+type Roles struct {
+	Name       string
+	MemberJIDs []string
+}
+
+type WhatsAppAssistantRepository interface {
+	InsertRole()
+}
+
 type WhatsAppAssistant struct {
 	client *whatsmeow.Client
 }

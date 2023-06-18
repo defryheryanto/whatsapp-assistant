@@ -13,12 +13,18 @@ func (wa *WhatsAppAssistant) handleCommands(ctx context.Context) whatsmeow.Event
 		switch v := evt.(type) {
 		case *events.Message:
 			message := v.Message.GetConversation()
+			if message == "" {
+				if v.Message.GetExtendedTextMessage().Text == nil {
+					return
+				}
+				message = *v.Message.GetExtendedTextMessage().Text
+			}
 			commands := extractCommands(message)
 
 			for _, command := range commands {
-				action := getCommandAction(command)
+				action := wa.getCommandAction(command)
 				if action != nil {
-					action(ctx, wa.client, v)
+					action(ctx, v)
 				}
 			}
 		}
