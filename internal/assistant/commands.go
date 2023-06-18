@@ -17,7 +17,7 @@ const (
 	COMMAND_PREFIX      = '%'
 	COMMAND_COMMANDS    = "commands"
 	COMMAND_ASSIGN_ROLE = "assign"
-	COMMAND_CALL_ROLE   = "call"
+	COMMAND_CALL_ROLE   = "callrole"
 )
 
 type commandAction interface {
