@@ -28,7 +28,11 @@ func getCommands() map[string]*Command {
 }
 
 func getCommandAction(command string) commandAction {
-	return getCommands()[command].Action
+	result := getCommands()[command]
+	if result == nil {
+		return nil
+	}
+	return result.Action
 }
 
 func getAvailableCommands(ctx context.Context, client *whatsmeow.Client, evt *events.Message) error {
