@@ -9,13 +9,13 @@ Your WhatsApp Assistant
 
 ## Setup
 1. Install [Go](https://go.dev/doc/install)
-2. Install [Golang Migrate CLI](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#migrate-cli)
-3. Run `go install -tags 'sqlite3' github.com/golang-migrate/migrate/v4/cmd/migrate@latest`
+2. Install [GCC](https://gcc.gnu.org/install/)
+3. Install [Golang Migrate CLI](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#migrate-cli)
+4. Run `go install -tags 'sqlite3' github.com/golang-migrate/migrate/v4/cmd/migrate@latest`
 
 ## Running the application
 1. Clone the repository
-2. Run `migrate -database sqlite3://whatsapp_assistant.db -path db/migrations up`
-
+2. Run `go run ./db/migrate.go`
 3. Run `go run ./cmd/app/...` from the root project path
 4. Copy the QRCode text from the terminal
 5. Open https://www.the-qrcode-generator.com/ and navigate to 'Free Text' tab
