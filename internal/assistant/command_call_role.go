@@ -17,8 +17,9 @@ type CallRoleAction struct {
 
 func (a *CallRoleAction) Execute(ctx context.Context, evt *events.Message) error {
 	roleName := a.extractRoleName(evt)
+	groupJid := evt.Info.Chat.ToNonAD().String()
 
-	roles, err := a.repository.FindRole(ctx, roleName)
+	roles, err := a.repository.FindRole(ctx, roleName, groupJid)
 	if err != nil {
 		return err
 	}

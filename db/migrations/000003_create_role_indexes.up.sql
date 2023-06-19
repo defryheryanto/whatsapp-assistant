@@ -1,2 +1,2 @@
-CREATE INDEX idx_roles_name
-ON roles (name);
+CREATE INDEX idx_roles_name_group_jid
+ON roles (name, group_jid);

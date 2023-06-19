@@ -12,11 +12,12 @@ import (
 
 type Role struct {
 	Name       string
+	GroupJid   string
 	MemberJIDs []string
 }
 
 type WhatsAppAssistantRepository interface {
-	FindRole(ctx context.Context, name string) (*Role, error)
+	FindRole(ctx context.Context, name, groupJid string) (*Role, error)
 	DeleteRole(ctx context.Context, name string) error
 	InsertRole(ctx context.Context, data *Role) error
 }
@@ -52,9 +53,11 @@ func (wa *WhatsAppAssistant) Start(ctx context.Context) {
 		}
 	}
 
+	log.Println("WhatsApp Client has connected")
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	<-c
 
+	log.Println("WhatsApp Client disconnected")
 	wa.client.Disconnect()
 }

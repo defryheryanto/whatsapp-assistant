@@ -3,8 +3,9 @@ package gorm
 import "github.com/defryheryanto/whatsapp-assistant/internal/assistant"
 
 type Role struct {
-	Id   int64  `gorm:"primaryKey;autoIncrement;column:id"`
-	Name string `gorm:"column:name"`
+	Id       int64  `gorm:"primaryKey;autoIncrement;column:id"`
+	Name     string `gorm:"column:name"`
+	GroupJid string `gorm:"column:group_jid"`
 }
 
 func (Role) TableName() string {

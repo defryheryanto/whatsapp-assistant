@@ -26,7 +26,8 @@ func (r *WhatsAppAssistantRepository) InsertRole(ctx context.Context, data *assi
 	db := r.db.Begin()
 
 	role := &Role{
-		Name: data.Name,
+		Name:     data.Name,
+		GroupJid: data.GroupJid,
 	}
 	err := db.Create(&role).Error
 	if err != nil {
@@ -52,10 +53,10 @@ func (r *WhatsAppAssistantRepository) InsertRole(ctx context.Context, data *assi
 	return nil
 }
 
-func (r *WhatsAppAssistantRepository) FindRole(ctx context.Context, name string) (*assistant.Role, error) {
+func (r *WhatsAppAssistantRepository) FindRole(ctx context.Context, name, groupJid string) (*assistant.Role, error) {
 	var role *Role
 
-	err := r.db.Where("name = ?", name).First(&role).Error
+	err := r.db.Where("name = ? AND group_jid = ?", name, groupJid).First(&role).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, nil

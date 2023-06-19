@@ -17,8 +17,9 @@ func (a *AssignRoleAction) Execute(ctx context.Context, evt *events.Message) err
 	if roleName == "" {
 		return nil
 	}
+	groupJid := evt.Info.Chat.ToNonAD().String()
 
-	existingRole, err := a.repository.FindRole(ctx, roleName)
+	existingRole, err := a.repository.FindRole(ctx, roleName, groupJid)
 	if err != nil {
 		return err
 	}
@@ -31,6 +32,7 @@ func (a *AssignRoleAction) Execute(ctx context.Context, evt *events.Message) err
 
 	err = a.repository.InsertRole(ctx, &Role{
 		Name:       roleName,
+		GroupJid:   groupJid,
 		MemberJIDs: evt.Message.GetExtendedTextMessage().GetContextInfo().GetMentionedJid(),
 	})
 	if err != nil {

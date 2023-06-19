@@ -46,8 +46,8 @@ Your WhatsApp Assistant
         }
     ]
 }
-2. Press the debug button (F5 on windows)
 ```
+2. Press the debug button (F5 on windows)
 
 ## Disclaimer
 It is important to note that utilizing a bot for WhatsApp can result in the suspension or banning of your WhatsApp account. Therefore, I strongly recommend refraining from using your primary WhatsApp account and using a secondary account instead to mitigate any potential risks<br>
