@@ -14,10 +14,11 @@ type Command struct {
 }
 
 const (
-	COMMAND_PREFIX      = '%'
-	COMMAND_COMMANDS    = "commands"
-	COMMAND_ASSIGN_ROLE = "assign"
-	COMMAND_CALL_ROLE   = "call"
+	COMMAND_PREFIX        = '%'
+	COMMAND_COMMANDS      = "commands"
+	COMMAND_ASSIGN_ROLE   = "assign"
+	COMMAND_CALL_ROLE     = "call"
+	COMMAND_CALL_EVERYONE = "all"
 )
 
 type commandAction interface {
@@ -45,6 +46,13 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 			Action: &CallRoleAction{
 				WhatsAppAssistant: wa,
 				Command:           commandFormat(COMMAND_CALL_ROLE),
+			},
+		},
+		COMMAND_CALL_EVERYONE: {
+			Format:      commandFormat(COMMAND_CALL_EVERYONE),
+			Description: "Mention all members in group",
+			Action: &CallEveryoneAction{
+				WhatsAppAssistant: wa,
 			},
 		},
 	}
