@@ -41,7 +41,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 			},
 		},
 		COMMAND_CALL_ROLE: {
-			Format:      fmt.Sprintf("%s [role name]", commandFormat(COMMAND_CALL_ROLE)),
+			Format:      fmt.Sprintf("%s[role name]", commandFormat(COMMAND_CALL_ROLE)),
 			Description: "Mention members of called role",
 			Action: &CallRoleAction{
 				WhatsAppAssistant: wa,
