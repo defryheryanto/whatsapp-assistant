@@ -17,7 +17,7 @@ const (
 	COMMAND_PREFIX        = '%'
 	COMMAND_COMMANDS      = "commands"
 	COMMAND_ASSIGN_ROLE   = "assign"
-	COMMAND_CALL_ROLE     = "call"
+	COMMAND_CALL_ROLE     = ""
 	COMMAND_CALL_EVERYONE = "all"
 )
 
@@ -45,7 +45,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 			Description: "Mention members of called role",
 			Action: &CallRoleAction{
 				WhatsAppAssistant: wa,
-				Command:           commandFormat(COMMAND_CALL_ROLE),
+				CommandPrefix:     string(COMMAND_PREFIX),
 			},
 		},
 		COMMAND_CALL_EVERYONE: {
@@ -61,7 +61,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 func (wa *WhatsAppAssistant) getCommandAction(command string) commandAction {
 	result := wa.getCommands()[command]
 	if result == nil {
-		return nil
+		result = wa.getCommands()[COMMAND_CALL_ROLE]
 	}
 	return result.Action
 }

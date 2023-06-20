@@ -2,9 +2,12 @@ package assistant
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
+	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
 	"go.mau.fi/whatsmeow/types/events"
+	"google.golang.org/protobuf/proto"
 )
 
 type AssignRoleAction struct {
@@ -15,6 +18,17 @@ type AssignRoleAction struct {
 func (a *AssignRoleAction) Execute(ctx context.Context, evt *events.Message) error {
 	roleName := a.extractRoleName(evt)
 	if roleName == "" {
+		return nil
+	}
+
+	existingCommand := a.getCommands()[roleName]
+	if existingCommand != nil {
+		_, err := a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
+			Conversation: proto.String(fmt.Sprintf("Role '%s' unavailable", roleName)),
+		})
+		if err != nil {
+			return err
+		}
 		return nil
 	}
 	groupJid := evt.Info.Chat.ToNonAD().String()

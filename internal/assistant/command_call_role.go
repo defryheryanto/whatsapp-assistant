@@ -12,7 +12,7 @@ import (
 
 type CallRoleAction struct {
 	*WhatsAppAssistant
-	Command string
+	CommandPrefix string
 }
 
 func (a *CallRoleAction) Execute(ctx context.Context, evt *events.Message) error {
@@ -51,9 +51,9 @@ func (a *CallRoleAction) extractRoleName(evt *events.Message) string {
 
 	roleName := ""
 	words := strings.Split(message, " ")
-	for i := 1; i < len(words); i++ {
-		if words[i-1] == a.Command {
-			roleName = words[i]
+	for _, word := range words {
+		if string(word[0]) == a.CommandPrefix {
+			roleName = word[1:]
 		}
 	}
 
