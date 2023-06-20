@@ -54,6 +54,7 @@ func (a *CallRoleAction) extractRoleName(evt *events.Message) string {
 	for _, word := range words {
 		if string(word[0]) == a.CommandPrefix {
 			roleName = word[1:]
+			break
 		}
 	}
 
