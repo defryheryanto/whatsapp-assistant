@@ -51,7 +51,8 @@ func main() {
 		if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 			panic(err)
 		}
-		fmt.Println("Migrate complete.")
+		version, _, _ := m.Version()
+		fmt.Printf("Migrate complete (version %d)\n", version)
 	}
 }
 

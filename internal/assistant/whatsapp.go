@@ -16,10 +16,17 @@ type Role struct {
 	MemberJIDs []string
 }
 
+type SavedText struct {
+	GroupJid string
+	Title    string
+	Content  string
+}
+
 type WhatsAppAssistantRepository interface {
 	FindRole(ctx context.Context, name, groupJid string) (*Role, error)
 	DeleteRole(ctx context.Context, name string) error
 	InsertRole(ctx context.Context, data *Role) error
+	SaveText(ctx context.Context, data *SavedText) error
 }
 
 type WhatsAppAssistant struct {

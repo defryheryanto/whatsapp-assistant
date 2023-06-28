@@ -19,6 +19,7 @@ const (
 	COMMAND_ASSIGN_ROLE   = "assign"
 	COMMAND_CALL_ROLE     = ""
 	COMMAND_CALL_EVERYONE = "all"
+	COMMAND_SAVE_TEXT     = "save"
 )
 
 type commandAction interface {
@@ -53,6 +54,14 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 			Description: "Mention all members in group",
 			Action: &CallEveryoneAction{
 				WhatsAppAssistant: wa,
+			},
+		},
+		COMMAND_SAVE_TEXT: {
+			Format:      fmt.Sprintf("%s [title] [content]", commandFormat(COMMAND_SAVE_TEXT)),
+			Description: "Save the text",
+			Action: &SaveTextAction{
+				WhatsAppAssistant: wa,
+				Command:           commandFormat(COMMAND_SAVE_TEXT),
 			},
 		},
 	}

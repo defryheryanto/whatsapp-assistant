@@ -40,3 +40,14 @@ func convertToServiceRole(role *Role, members []*RoleMember) *assistant.Role {
 
 	return result
 }
+
+type SavedText struct {
+	Id       int64  `gorm:"primaryKey;autoIncrement;column:id"`
+	GroupJid string `gorm:"column:group_jid"`
+	Title    string `gorm:"column:title"`
+	Content  string `gorm:"column:content"`
+}
+
+func (SavedText) TableName() string {
+	return "saved_texts"
+}

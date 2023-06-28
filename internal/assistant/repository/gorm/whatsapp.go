@@ -102,3 +102,21 @@ func (r *WhatsAppAssistantRepository) DeleteRole(ctx context.Context, name strin
 	db.Commit()
 	return nil
 }
+
+func (r *WhatsAppAssistantRepository) SaveText(ctx context.Context, data *assistant.SavedText) error {
+	savedText := &SavedText{
+		GroupJid: data.GroupJid,
+		Title:    data.Title,
+		Content:  data.Content,
+	}
+
+	db := r.db.Begin()
+	err := db.Create(&savedText).Error
+	if err != nil {
+		db.Rollback()
+		return err
+	}
+
+	db.Commit()
+	return nil
+}
