@@ -138,3 +138,16 @@ func (r *WhatsAppAssistantRepository) GetSavedText(ctx context.Context, groupJid
 		Content:  savedText.Content,
 	}, nil
 }
+
+func (r *WhatsAppAssistantRepository) DeleteSavedText(ctx context.Context, groupJid, title string) error {
+	db := r.db.Begin()
+
+	err := db.Where("group_jid = ? AND title = ?", groupJid, title).Delete(&SavedText{}).Error
+	if err != nil {
+		db.Rollback()
+		return err
+	}
+
+	db.Commit()
+	return nil
+}

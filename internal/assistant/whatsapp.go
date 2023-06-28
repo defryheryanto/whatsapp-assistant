@@ -28,6 +28,7 @@ type WhatsAppAssistantRepository interface {
 	InsertRole(ctx context.Context, data *Role) error
 	SaveText(ctx context.Context, data *SavedText) error
 	GetSavedText(ctx context.Context, groupJid, title string) (*SavedText, error)
+	DeleteSavedText(ctx context.Context, groupJid, title string) error
 }
 
 type WhatsAppAssistant struct {

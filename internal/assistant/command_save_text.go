@@ -21,8 +21,19 @@ func (a *SaveTextAction) Execute(ctx context.Context, evt *events.Message) error
 		return nil
 	}
 
-	err := a.repository.SaveText(ctx, &SavedText{
-		GroupJid: evt.Info.Chat.ToNonAD().String(),
+	groupJid := evt.Info.Chat.ToNonAD().String()
+	existingSavedText, err := a.repository.GetSavedText(ctx, groupJid, title)
+	if err != nil {
+		return err
+	}
+	if existingSavedText != nil {
+		if err = a.repository.DeleteSavedText(ctx, groupJid, title); err != nil {
+			return err
+		}
+	}
+
+	err = a.repository.SaveText(ctx, &SavedText{
+		GroupJid: groupJid,
 		Title:    title,
 		Content:  content,
 	})
