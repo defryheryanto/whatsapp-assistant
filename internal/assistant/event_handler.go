@@ -36,7 +36,9 @@ func getMessage(evt *events.Message) string {
 }
 
 func extractCommands(message string) []string {
-	words := strings.Split(message, " ")
+	words := strings.FieldsFunc(message, func(r rune) bool {
+		return r == '\n' || r == ' '
+	})
 	commands := []string{}
 	for _, word := range words {
 		if word[0] == COMMAND_PREFIX {
