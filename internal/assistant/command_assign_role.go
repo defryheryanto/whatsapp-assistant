@@ -60,7 +60,9 @@ func (a *AssignRoleAction) extractRoleName(evt *events.Message) string {
 	message := getMessage(evt)
 
 	roleName := ""
-	words := strings.Split(message, " ")
+	words := strings.FieldsFunc(message, func(r rune) bool {
+		return r == '\n' || r == ' '
+	})
 	for i := 1; i < len(words); i++ {
 		if words[i-1] == a.Command {
 			roleName = words[i]
