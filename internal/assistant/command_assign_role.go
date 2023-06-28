@@ -53,6 +53,13 @@ func (a *AssignRoleAction) Execute(ctx context.Context, evt *events.Message) err
 		return err
 	}
 
+	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
+		Conversation: proto.String(fmt.Sprintf("Assigning '%s' success", roleName)),
+	})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

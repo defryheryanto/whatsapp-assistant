@@ -2,9 +2,12 @@ package assistant
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
+	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
 	"go.mau.fi/whatsmeow/types/events"
+	"google.golang.org/protobuf/proto"
 )
 
 type SaveTextAction struct {
@@ -22,6 +25,13 @@ func (a *SaveTextAction) Execute(ctx context.Context, evt *events.Message) error
 		GroupJid: evt.Info.Chat.ToNonAD().String(),
 		Title:    title,
 		Content:  content,
+	})
+	if err != nil {
+		return err
+	}
+
+	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
+		Conversation: proto.String(fmt.Sprintf("Title '%s' Saved", title)),
 	})
 	if err != nil {
 		return err
