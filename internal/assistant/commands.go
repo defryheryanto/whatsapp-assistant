@@ -20,6 +20,7 @@ const (
 	COMMAND_CALL_ROLE     = ""
 	COMMAND_CALL_EVERYONE = "all"
 	COMMAND_SAVE_TEXT     = "save"
+	COMMAND_GET_TEXT      = "text"
 )
 
 type commandAction interface {
@@ -62,6 +63,14 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 			Action: &SaveTextAction{
 				WhatsAppAssistant: wa,
 				Command:           commandFormat(COMMAND_SAVE_TEXT),
+			},
+		},
+		COMMAND_GET_TEXT: {
+			Format:      fmt.Sprintf("%s [title]", commandFormat(COMMAND_GET_TEXT)),
+			Description: "Get the saved text by title",
+			Action: &GetSavedTextAction{
+				WhatsAppAssistant: wa,
+				Command:           commandFormat(COMMAND_GET_TEXT),
 			},
 		},
 	}

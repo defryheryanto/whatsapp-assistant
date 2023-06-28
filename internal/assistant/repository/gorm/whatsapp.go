@@ -120,3 +120,21 @@ func (r *WhatsAppAssistantRepository) SaveText(ctx context.Context, data *assist
 	db.Commit()
 	return nil
 }
+
+func (r *WhatsAppAssistantRepository) GetSavedText(ctx context.Context, groupJid, title string) (*assistant.SavedText, error) {
+	var savedText *SavedText
+
+	err := r.db.Where("group_jid = ? AND title = ?", groupJid, title).First(&savedText).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return &assistant.SavedText{
+		GroupJid: savedText.GroupJid,
+		Title:    savedText.Title,
+		Content:  savedText.Content,
+	}, nil
+}
