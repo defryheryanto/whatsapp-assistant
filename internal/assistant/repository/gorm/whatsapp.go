@@ -151,3 +151,24 @@ func (r *WhatsAppAssistantRepository) DeleteSavedText(ctx context.Context, group
 	db.Commit()
 	return nil
 }
+
+func (r WhatsAppAssistantRepository) InsertBirthday(ctx context.Context, birthday *assistant.Birthday) error {
+	db := r.db.Begin()
+
+	newBirthday := &Birthday{
+		Name:          birthday.Name,
+		BirthDate:     birthday.BirthDate,
+		BirthMonth:    birthday.BirthMonth,
+		BirthYear:     birthday.BirthYear,
+		TargetChatJid: birthday.TargetChatJid,
+	}
+
+	err := db.Create(&newBirthday).Error
+	if err != nil {
+		db.Rollback()
+		return err
+	}
+
+	db.Commit()
+	return nil
+}

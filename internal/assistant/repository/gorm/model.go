@@ -51,3 +51,16 @@ type SavedText struct {
 func (SavedText) TableName() string {
 	return "saved_texts"
 }
+
+type Birthday struct {
+	Id            int64  `gorm:"primaryKey;autoIncrement;column:id"`
+	Name          string `gorm:"column:name"`
+	BirthDate     int16  `gorm:"column:birth_date"`
+	BirthMonth    int16  `gorm:"column:birth_month"`
+	BirthYear     int16  `gorm:"column:birth_year"`
+	TargetChatJid string `gorm:"column:target_chat_jid"`
+}
+
+func (Birthday) TableName() string {
+	return "birthdays"
+}

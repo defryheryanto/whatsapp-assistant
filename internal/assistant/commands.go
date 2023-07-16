@@ -11,6 +11,7 @@ type Command struct {
 	Format      string
 	Description string
 	Action      commandAction
+	IsPrivate   bool
 }
 
 const (
@@ -21,6 +22,7 @@ const (
 	COMMAND_CALL_EVERYONE = "all"
 	COMMAND_SAVE_TEXT     = "save"
 	COMMAND_GET_TEXT      = "text"
+	COMMAND_SAVE_BIRTHDAY = "birthday"
 )
 
 type commandAction interface {
@@ -33,6 +35,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 			Format:      commandFormat(COMMAND_COMMANDS),
 			Description: "Get All Commands",
 			Action:      &GetCommandsAction{wa},
+			IsPrivate:   false,
 		},
 		COMMAND_ASSIGN_ROLE: {
 			Format:      fmt.Sprintf("%s [role name] [@member1 @member2 @member3 ...]", commandFormat(COMMAND_ASSIGN_ROLE)),
@@ -41,6 +44,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 				WhatsAppAssistant: wa,
 				Command:           commandFormat(COMMAND_ASSIGN_ROLE),
 			},
+			IsPrivate: false,
 		},
 		COMMAND_CALL_ROLE: {
 			Format:      fmt.Sprintf("%s[role name]", commandFormat(COMMAND_CALL_ROLE)),
@@ -49,6 +53,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 				WhatsAppAssistant: wa,
 				CommandPrefix:     string(COMMAND_PREFIX),
 			},
+			IsPrivate: false,
 		},
 		COMMAND_CALL_EVERYONE: {
 			Format:      commandFormat(COMMAND_CALL_EVERYONE),
@@ -56,6 +61,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 			Action: &CallEveryoneAction{
 				WhatsAppAssistant: wa,
 			},
+			IsPrivate: false,
 		},
 		COMMAND_SAVE_TEXT: {
 			Format:      fmt.Sprintf("%s [title] [content]", commandFormat(COMMAND_SAVE_TEXT)),
@@ -64,6 +70,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 				WhatsAppAssistant: wa,
 				Command:           commandFormat(COMMAND_SAVE_TEXT),
 			},
+			IsPrivate: false,
 		},
 		COMMAND_GET_TEXT: {
 			Format:      fmt.Sprintf("%s [title]", commandFormat(COMMAND_GET_TEXT)),
@@ -72,6 +79,16 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 				WhatsAppAssistant: wa,
 				Command:           commandFormat(COMMAND_GET_TEXT),
 			},
+			IsPrivate: false,
+		},
+		COMMAND_SAVE_BIRTHDAY: {
+			Format:      fmt.Sprintf("%s [name] [birthday (yyyy-mm-dd)]", commandFormat(COMMAND_SAVE_BIRTHDAY)),
+			Description: "Save the person's birthday",
+			Action: &SaveBirthdayAction{
+				WhatsAppAssistant: wa,
+				Command:           commandFormat(COMMAND_SAVE_BIRTHDAY),
+			},
+			IsPrivate: true,
 		},
 	}
 }

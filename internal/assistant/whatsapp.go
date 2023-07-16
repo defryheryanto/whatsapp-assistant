@@ -22,6 +22,14 @@ type SavedText struct {
 	Content  string
 }
 
+type Birthday struct {
+	Name          string
+	BirthDate     int16
+	BirthMonth    int16
+	BirthYear     int16
+	TargetChatJid string
+}
+
 type WhatsAppAssistantRepository interface {
 	FindRole(ctx context.Context, name, groupJid string) (*Role, error)
 	DeleteRole(ctx context.Context, name string) error
@@ -29,6 +37,7 @@ type WhatsAppAssistantRepository interface {
 	SaveText(ctx context.Context, data *SavedText) error
 	GetSavedText(ctx context.Context, groupJid, title string) (*SavedText, error)
 	DeleteSavedText(ctx context.Context, groupJid, title string) error
+	InsertBirthday(ctx context.Context, birthday *Birthday) error
 }
 
 type WhatsAppAssistant struct {
