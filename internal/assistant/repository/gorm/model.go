@@ -64,3 +64,30 @@ type Birthday struct {
 func (Birthday) TableName() string {
 	return "birthdays"
 }
+
+func (b *Birthday) ToServiceModel() *assistant.Birthday {
+	if b == nil {
+		return nil
+	}
+
+	return &assistant.Birthday{
+		Name:          b.Name,
+		BirthDate:     b.BirthDate,
+		BirthMonth:    b.BirthMonth,
+		BirthYear:     b.BirthYear,
+		TargetChatJid: b.TargetChatJid,
+	}
+}
+
+func convertToServiceBirthdays(data []*Birthday) []*assistant.Birthday {
+	if data == nil {
+		return nil
+	}
+
+	birthdays := make([]*assistant.Birthday, 0, len(data))
+	for _, d := range data {
+		birthdays = append(birthdays, d.ToServiceModel())
+	}
+
+	return birthdays
+}

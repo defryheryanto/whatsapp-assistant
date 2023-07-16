@@ -152,7 +152,7 @@ func (r *WhatsAppAssistantRepository) DeleteSavedText(ctx context.Context, group
 	return nil
 }
 
-func (r WhatsAppAssistantRepository) InsertBirthday(ctx context.Context, birthday *assistant.Birthday) error {
+func (r *WhatsAppAssistantRepository) InsertBirthday(ctx context.Context, birthday *assistant.Birthday) error {
 	db := r.db.Begin()
 
 	newBirthday := &Birthday{
@@ -171,4 +171,17 @@ func (r WhatsAppAssistantRepository) InsertBirthday(ctx context.Context, birthda
 
 	db.Commit()
 	return nil
+}
+
+func (r *WhatsAppAssistantRepository) GetBirthdays(ctx context.Context, month, year int) ([]*assistant.Birthday, error) {
+	db := r.db.Begin()
+
+	var result []*Birthday
+
+	err := db.Where("birth_month = ? AND birth_year = ?", month, year).Find(&result).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return convertToServiceBirthdays(result), nil
 }
