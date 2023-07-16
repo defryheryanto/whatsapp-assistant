@@ -52,7 +52,7 @@ func (r *BirthdayReminder) RunInBackground(ctx context.Context, done chan bool) 
 func (r *BirthdayReminder) Run(ctx context.Context) error {
 	log.Println("checking for birthday reminders...")
 	now := time.Now()
-	birthdays, err := r.repository.GetBirthdays(ctx, int(now.Month()), now.Year())
+	birthdays, err := r.repository.GetBirthdays(ctx, int(now.Day()), int(now.Month()))
 	if err != nil {
 		log.Printf("error getting birthday: %s\n", err.Error())
 		return err
