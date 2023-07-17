@@ -2,10 +2,12 @@ package assistant
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"go.mau.fi/whatsmeow"
 )
@@ -30,6 +32,18 @@ type Birthday struct {
 	TargetChatJid string
 }
 
+func (b *Birthday) String() string {
+	formattedDate := fmt.Sprintf("%d-%02d-%02d", b.BirthYear, b.BirthMonth, b.BirthDate)
+
+	birthdateString := formattedDate
+	birthdayDate, err := time.Parse("2006-01-02", formattedDate)
+	if err == nil {
+		birthdateString = birthdayDate.Format("January 2, 2006")
+	}
+
+	return birthdateString
+}
+
 type PremiumUser struct {
 	UserJid string
 }
@@ -45,6 +59,7 @@ type WhatsAppAssistantRepository interface {
 	GetBirthdays(ctx context.Context, date, month int) ([]*Birthday, error)
 	GetBirthday(ctx context.Context, name, chatJid string) (*Birthday, error)
 	GetPremiumUser(ctx context.Context, senderJid string) (*PremiumUser, error)
+	GetBirthdaysByChatJid(ctx context.Context, chatJid string) ([]*Birthday, error)
 }
 
 type WhatsAppAssistant struct {

@@ -23,6 +23,7 @@ const (
 	COMMAND_SAVE_TEXT     = "save"
 	COMMAND_GET_TEXT      = "text"
 	COMMAND_SAVE_BIRTHDAY = "birthday"
+	COMMAND_LIST_BIRTHDAY = "birthdaylist"
 )
 
 type commandAction interface {
@@ -93,6 +94,14 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 				},
 			},
 			IsPrivate: true,
+		},
+		COMMAND_LIST_BIRTHDAY: {
+			Format:      commandFormat(COMMAND_LIST_BIRTHDAY),
+			Description: "List saved birthdays",
+			Action: &BirthdayListAction{
+				WhatsAppAssistant: wa,
+			},
+			IsPrivate: false,
 		},
 	}
 }

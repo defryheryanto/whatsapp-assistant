@@ -34,11 +34,9 @@ func (a *SaveBirthdayAction) Execute(ctx context.Context, evt *events.Message) e
 		_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
 			Conversation: proto.String(
 				fmt.Sprintf(
-					"%s's birthday is already set on %d-%d-%d",
+					"%s's birthday is already set on %s",
 					existingBirthday.Name,
-					existingBirthday.BirthYear,
-					existingBirthday.BirthMonth,
-					existingBirthday.BirthDate,
+					existingBirthday.String(),
 				),
 			),
 		})

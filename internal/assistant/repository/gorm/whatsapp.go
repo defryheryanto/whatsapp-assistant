@@ -214,3 +214,14 @@ func (r *WhatsAppAssistantRepository) GetPremiumUser(ctx context.Context, sender
 
 	return result.ToServiceModel(), nil
 }
+
+func (r *WhatsAppAssistantRepository) GetBirthdaysByChatJid(ctx context.Context, chatJid string) ([]*assistant.Birthday, error) {
+	var result []*Birthday
+
+	err := r.db.Where("target_chat_jid = ?", chatJid).Find(&result).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return convertToServiceBirthdays(result), nil
+}
