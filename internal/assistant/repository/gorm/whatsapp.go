@@ -2,6 +2,7 @@ package gorm
 
 import (
 	"context"
+	"strings"
 
 	"github.com/defryheryanto/whatsapp-assistant/internal/assistant"
 	"gorm.io/gorm"
@@ -156,7 +157,7 @@ func (r *WhatsAppAssistantRepository) InsertBirthday(ctx context.Context, birthd
 	db := r.db.Begin()
 
 	newBirthday := &Birthday{
-		Name:          birthday.Name,
+		Name:          strings.ToUpper(birthday.Name),
 		BirthDate:     birthday.BirthDate,
 		BirthMonth:    birthday.BirthMonth,
 		BirthYear:     birthday.BirthYear,
@@ -184,4 +185,18 @@ func (r *WhatsAppAssistantRepository) GetBirthdays(ctx context.Context, date, mo
 	}
 
 	return convertToServiceBirthdays(result), nil
+}
+
+func (r *WhatsAppAssistantRepository) GetBirthday(ctx context.Context, name, chatJid string) (*assistant.Birthday, error) {
+	var result *Birthday
+
+	err := r.db.Where("name = ? AND target_chat_jid", strings.ToUpper(name), chatJid).First(&result).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return result.ToServiceModel(), nil
 }

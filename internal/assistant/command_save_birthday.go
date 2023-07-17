@@ -24,12 +24,36 @@ func (a *SaveBirthdayAction) Execute(ctx context.Context, evt *events.Message) e
 		return err
 	}
 
+	chatJid := evt.Info.Chat.ToNonAD().String()
+
+	existingBirthday, err := a.repository.GetBirthday(ctx, name, chatJid)
+	if err != nil {
+		return err
+	}
+	if existingBirthday != nil {
+		_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
+			Conversation: proto.String(
+				fmt.Sprintf(
+					"%s's birthday is already set on %d-%d-%d",
+					existingBirthday.Name,
+					existingBirthday.BirthYear,
+					existingBirthday.BirthMonth,
+					existingBirthday.BirthDate,
+				),
+			),
+		})
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
 	err = a.repository.InsertBirthday(ctx, &Birthday{
-		Name:          strings.ToUpper(name),
+		Name:          name,
 		BirthDate:     int16(birthDate.Day()),
 		BirthMonth:    int16(birthDate.Month()),
 		BirthYear:     int16(birthDate.Year()),
-		TargetChatJid: evt.Info.Chat.ToNonAD().String(),
+		TargetChatJid: chatJid,
 	})
 	if err != nil {
 		return err

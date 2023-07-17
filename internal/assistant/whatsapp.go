@@ -39,6 +39,7 @@ type WhatsAppAssistantRepository interface {
 	DeleteSavedText(ctx context.Context, groupJid, title string) error
 	InsertBirthday(ctx context.Context, birthday *Birthday) error
 	GetBirthdays(ctx context.Context, date, month int) ([]*Birthday, error)
+	GetBirthday(ctx context.Context, name, chatJid string) (*Birthday, error)
 }
 
 type WhatsAppAssistant struct {
