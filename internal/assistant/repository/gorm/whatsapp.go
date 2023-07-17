@@ -190,7 +190,7 @@ func (r *WhatsAppAssistantRepository) GetBirthdays(ctx context.Context, date, mo
 func (r *WhatsAppAssistantRepository) GetBirthday(ctx context.Context, name, chatJid string) (*assistant.Birthday, error) {
 	var result *Birthday
 
-	err := r.db.Where("name = ? AND target_chat_jid", strings.ToUpper(name), chatJid).First(&result).Error
+	err := r.db.Where("name = ? AND target_chat_jid = ?", strings.ToUpper(name), chatJid).First(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, nil
