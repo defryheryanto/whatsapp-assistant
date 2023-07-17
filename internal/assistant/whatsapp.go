@@ -30,6 +30,10 @@ type Birthday struct {
 	TargetChatJid string
 }
 
+type PremiumUser struct {
+	UserJid string
+}
+
 type WhatsAppAssistantRepository interface {
 	FindRole(ctx context.Context, name, groupJid string) (*Role, error)
 	DeleteRole(ctx context.Context, name string) error
@@ -40,6 +44,7 @@ type WhatsAppAssistantRepository interface {
 	InsertBirthday(ctx context.Context, birthday *Birthday) error
 	GetBirthdays(ctx context.Context, date, month int) ([]*Birthday, error)
 	GetBirthday(ctx context.Context, name, chatJid string) (*Birthday, error)
+	GetPremiumUser(ctx context.Context, senderJid string) (*PremiumUser, error)
 }
 
 type WhatsAppAssistant struct {

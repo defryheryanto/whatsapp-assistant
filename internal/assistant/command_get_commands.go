@@ -21,6 +21,9 @@ func (a *GetCommandsAction) Execute(ctx context.Context, evt *events.Message) er
 		}
 	}
 
+	sender := evt.Info.Sender.ToNonAD().String()
+	fmt.Println(sender)
+
 	_, err := a.client.SendMessage(ctx, evt.Info.Chat, &proto.Message{
 		Conversation: &message,
 	})

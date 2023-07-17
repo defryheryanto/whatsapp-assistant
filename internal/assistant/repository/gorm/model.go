@@ -91,3 +91,22 @@ func convertToServiceBirthdays(data []*Birthday) []*assistant.Birthday {
 
 	return birthdays
 }
+
+type PremiumUser struct {
+	Id      int64  `gorm:"primaryKey;autoIncrement;column:id"`
+	UserJid string `gorm:"column:user_jid"`
+}
+
+func (PremiumUser) TableName() string {
+	return "premium_users"
+}
+
+func (p *PremiumUser) ToServiceModel() *assistant.PremiumUser {
+	if p == nil {
+		return nil
+	}
+
+	return &assistant.PremiumUser{
+		UserJid: p.UserJid,
+	}
+}

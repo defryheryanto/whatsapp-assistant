@@ -84,9 +84,13 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 		COMMAND_SAVE_BIRTHDAY: {
 			Format:      fmt.Sprintf("%s [name] [birthday (yyyy-mm-dd)]", commandFormat(COMMAND_SAVE_BIRTHDAY)),
 			Description: "Save the person's birthday",
-			Action: &SaveBirthdayAction{
-				WhatsAppAssistant: wa,
-				Command:           commandFormat(COMMAND_SAVE_BIRTHDAY),
+			Action: &PremiumUserAuthenticator{
+				client:     wa.client,
+				repository: wa.repository,
+				next: &SaveBirthdayAction{
+					WhatsAppAssistant: wa,
+					Command:           commandFormat(COMMAND_SAVE_BIRTHDAY),
+				},
 			},
 			IsPrivate: true,
 		},

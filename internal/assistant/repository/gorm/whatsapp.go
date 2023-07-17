@@ -200,3 +200,17 @@ func (r *WhatsAppAssistantRepository) GetBirthday(ctx context.Context, name, cha
 
 	return result.ToServiceModel(), nil
 }
+
+func (r *WhatsAppAssistantRepository) GetPremiumUser(ctx context.Context, senderJid string) (*assistant.PremiumUser, error) {
+	var result *PremiumUser
+
+	err := r.db.Where("user_jid = ?", senderJid).First(&result).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return result.ToServiceModel(), nil
+}
