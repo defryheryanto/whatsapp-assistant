@@ -218,7 +218,7 @@ func (r *WhatsAppAssistantRepository) GetPremiumUser(ctx context.Context, sender
 func (r *WhatsAppAssistantRepository) GetBirthdaysByChatJid(ctx context.Context, chatJid string) ([]*assistant.Birthday, error) {
 	var result []*Birthday
 
-	err := r.db.Where("target_chat_jid = ?", chatJid).Find(&result).Error
+	err := r.db.Where("target_chat_jid = ?", chatJid).Order("birth_month ASC, birth_date ASC").Find(&result).Error
 	if err != nil {
 		return nil, err
 	}
