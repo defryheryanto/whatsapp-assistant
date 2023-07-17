@@ -2,6 +2,7 @@ package assistant
 
 import (
 	"context"
+	"log"
 	"strings"
 
 	"go.mau.fi/whatsmeow"
@@ -18,7 +19,10 @@ func (wa *WhatsAppAssistant) handleCommands(ctx context.Context) whatsmeow.Event
 			for _, command := range commands {
 				action := wa.getCommandAction(command)
 				if action != nil {
-					action.Execute(ctx, v)
+					err := action.Execute(ctx, v)
+					if err != nil {
+						log.Printf("ERROR: executing [%s]: %v", command, err)
+					}
 				}
 			}
 		}
