@@ -46,19 +46,24 @@ func (a *SaveBirthdayAction) Execute(ctx context.Context, evt *events.Message) e
 		return nil
 	}
 
-	err = a.repository.InsertBirthday(ctx, &Birthday{
+	newBirthday := &Birthday{
 		Name:          name,
 		BirthDate:     int16(birthDate.Day()),
 		BirthMonth:    int16(birthDate.Month()),
 		BirthYear:     int16(birthDate.Year()),
 		TargetChatJid: chatJid,
-	})
+	}
+	err = a.repository.InsertBirthday(ctx, newBirthday)
 	if err != nil {
 		return err
 	}
 
 	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
-		Conversation: proto.String(fmt.Sprintf("saved %s birthday on %s", name, birthDate.Format("2006-01-02"))),
+		Conversation: proto.String(fmt.Sprintf(
+			"saved %s birthday on %s",
+			strings.ToUpper(newBirthday.Name),
+			newBirthday.String(),
+		)),
 	})
 	if err != nil {
 		return err

@@ -76,5 +76,6 @@ func (r *BirthdayReminder) Run(ctx context.Context) error {
 }
 
 func (r *BirthdayReminder) getBirthdayTemplate(birthday *Birthday) string {
-	return fmt.Sprintf("Today is %s birthday!", birthday.Name)
+	age := time.Now().Year() - int(birthday.BirthYear)
+	return fmt.Sprintf("%s turning %d today!", birthday.Name, age)
 }
