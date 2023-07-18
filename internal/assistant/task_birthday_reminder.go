@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"go.mau.fi/whatsmeow"
@@ -64,9 +65,13 @@ func (r *BirthdayReminder) Run(ctx context.Context) error {
 			log.Printf("error parsing jid %s: %s\n", birthday.TargetChatJid, err.Error())
 			continue
 		}
-		_, err = r.client.SendMessage(ctx, chatJid, &whatsmeow_proto.Message{
-			Conversation: proto.String(r.getBirthdayTemplate(birthday)),
-		})
+
+		message, err := r.getBirthdayMessage(birthday, chatJid)
+		if err != nil {
+			log.Printf("error getting message: %v\n", err)
+		}
+
+		_, err = r.client.SendMessage(ctx, chatJid, message)
 		if err != nil {
 			log.Printf("error sending message: %s\n", err.Error())
 		}
@@ -75,7 +80,64 @@ func (r *BirthdayReminder) Run(ctx context.Context) error {
 	return nil
 }
 
-func (r *BirthdayReminder) getBirthdayTemplate(birthday *Birthday) string {
+func (r *BirthdayReminder) getBirthdayMessage(birthday *Birthday, chatJid types.JID) (*whatsmeow_proto.Message, error) {
 	age := time.Now().Year() - int(birthday.BirthYear)
-	return fmt.Sprintf("%s turning %d today!", birthday.Name, age)
+	basicMessage := fmt.Sprintf("%s turning %d today!", birthday.Name, age)
+
+	isGroup, err := r.isGroup(chatJid)
+	if err != nil {
+		return nil, err
+	}
+	if !isGroup {
+		return &whatsmeow_proto.Message{
+			Conversation: proto.String(basicMessage),
+		}, nil
+	}
+
+	mentionText, mentionedJid, err := r.mentionAll(chatJid)
+	if err != nil {
+		return nil, err
+	}
+
+	return &whatsmeow_proto.Message{
+		ExtendedTextMessage: &whatsmeow_proto.ExtendedTextMessage{
+			Text: proto.String(fmt.Sprintf("%s\n%s", basicMessage, mentionText)),
+			ContextInfo: &whatsmeow_proto.ContextInfo{
+				MentionedJid: mentionedJid,
+			},
+		},
+	}, nil
+}
+
+func (r *BirthdayReminder) isGroup(chatJid types.JID) (bool, error) {
+	joinedGroups, err := r.client.GetJoinedGroups()
+	if err != nil {
+		return false, err
+	}
+	for _, gr := range joinedGroups {
+		if gr.JID.String() == chatJid.String() {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+func (r *BirthdayReminder) mentionAll(chatJid types.JID) (mentionText string, mentionedJid []string, err error) {
+	groupInfo, err := r.client.GetGroupInfo(chatJid)
+	if err != nil {
+		return "", nil, err
+	}
+
+	mentionedNumber := make([]string, len(groupInfo.Participants))
+	mentionedJid = make([]string, len(groupInfo.Participants))
+	for i, participant := range groupInfo.Participants {
+		jid := participant.JID.ToNonAD().String()
+		phoneNumber := strings.Split(jid, "@")[0]
+
+		mentionedNumber[i] = fmt.Sprintf("@%s", phoneNumber)
+		mentionedJid[i] = jid
+	}
+
+	return strings.Join(mentionedNumber, " "), mentionedJid, nil
 }
