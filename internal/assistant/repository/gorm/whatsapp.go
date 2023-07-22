@@ -175,11 +175,9 @@ func (r *WhatsAppAssistantRepository) InsertBirthday(ctx context.Context, birthd
 }
 
 func (r *WhatsAppAssistantRepository) GetBirthdays(ctx context.Context, date, month int) ([]*assistant.Birthday, error) {
-	db := r.db.Begin()
-
 	var result []*Birthday
 
-	err := db.Where("birth_date = ? AND birth_month = ?", date, month).Find(&result).Error
+	err := r.db.Where("birth_date = ? AND birth_month = ?", date, month).Find(&result).Error
 	if err != nil {
 		return nil, err
 	}
