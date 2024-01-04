@@ -3,3 +3,5 @@ whatsmeow.db
 .vscode/launch.json
 cmd/app/__debug_bin.exe
 cmd/test
+/logs
+whatsapp-assistant
