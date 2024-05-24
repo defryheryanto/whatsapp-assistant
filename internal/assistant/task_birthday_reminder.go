@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"go.mau.fi/whatsmeow"
-	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types"
 	"google.golang.org/protobuf/proto"
 )
@@ -80,7 +80,7 @@ func (r *BirthdayReminder) Run(ctx context.Context) error {
 	return nil
 }
 
-func (r *BirthdayReminder) getBirthdayMessage(birthday *Birthday, chatJid types.JID) (*whatsmeow_proto.Message, error) {
+func (r *BirthdayReminder) getBirthdayMessage(birthday *Birthday, chatJid types.JID) (*waE2E.Message, error) {
 	age := time.Now().Year() - int(birthday.BirthYear)
 	basicMessage := fmt.Sprintf("%s turning %d today!", birthday.Name, age)
 
@@ -89,7 +89,7 @@ func (r *BirthdayReminder) getBirthdayMessage(birthday *Birthday, chatJid types.
 		return nil, err
 	}
 	if !isGroup {
-		return &whatsmeow_proto.Message{
+		return &waE2E.Message{
 			Conversation: proto.String(basicMessage),
 		}, nil
 	}
@@ -99,11 +99,11 @@ func (r *BirthdayReminder) getBirthdayMessage(birthday *Birthday, chatJid types.
 		return nil, err
 	}
 
-	return &whatsmeow_proto.Message{
-		ExtendedTextMessage: &whatsmeow_proto.ExtendedTextMessage{
+	return &waE2E.Message{
+		ExtendedTextMessage: &waE2E.ExtendedTextMessage{
 			Text: proto.String(fmt.Sprintf("%s\n%s", basicMessage, mentionText)),
-			ContextInfo: &whatsmeow_proto.ContextInfo{
-				MentionedJid: mentionedJid,
+			ContextInfo: &waE2E.ContextInfo{
+				MentionedJID: mentionedJid,
 			},
 		},
 	}, nil

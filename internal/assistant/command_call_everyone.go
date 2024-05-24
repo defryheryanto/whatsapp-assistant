@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types/events"
 	"google.golang.org/protobuf/proto"
 )
@@ -34,11 +34,11 @@ func (a *CallEveryoneAction) Execute(ctx context.Context, evt *events.Message) e
 		mentionedJid[i] = jid
 	}
 
-	msg := &whatsmeow_proto.Message{
-		ExtendedTextMessage: &whatsmeow_proto.ExtendedTextMessage{
+	msg := &waE2E.Message{
+		ExtendedTextMessage: &waE2E.ExtendedTextMessage{
 			Text: proto.String(strings.Join(mentionText, " ")),
-			ContextInfo: &whatsmeow_proto.ContextInfo{
-				MentionedJid: mentionedJid,
+			ContextInfo: &waE2E.ContextInfo{
+				MentionedJID: mentionedJid,
 			},
 		},
 	}

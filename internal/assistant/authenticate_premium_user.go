@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"go.mau.fi/whatsmeow"
-	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types/events"
 	"google.golang.org/protobuf/proto"
 )
@@ -36,7 +36,7 @@ func (a *PremiumUserAuthenticator) Execute(ctx context.Context, evt *events.Mess
 		return err
 	}
 	if premiumUser == nil {
-		_, err := a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
+		_, err := a.client.SendMessage(ctx, evt.Info.Chat, &waE2E.Message{
 			Conversation: proto.String("You are not a premium user."),
 		})
 		if err != nil {

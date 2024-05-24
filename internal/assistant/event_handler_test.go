@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/onsi/gomega"
-	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types/events"
 	"google.golang.org/protobuf/proto"
 )
@@ -13,7 +13,7 @@ func Test_getMessage(t *testing.T) {
 	m := gomega.NewWithT(t)
 	t.Run("should get message from conversation", func(t *testing.T) {
 		message := getMessage(&events.Message{
-			Message: &whatsmeow_proto.Message{
+			Message: &waE2E.Message{
 				Conversation: proto.String("Hello World!"),
 			},
 		})
@@ -21,8 +21,8 @@ func Test_getMessage(t *testing.T) {
 	})
 	t.Run("should get message from extended text message if conversation is empty", func(t *testing.T) {
 		message := getMessage(&events.Message{
-			Message: &whatsmeow_proto.Message{
-				ExtendedTextMessage: &whatsmeow_proto.ExtendedTextMessage{
+			Message: &waE2E.Message{
+				ExtendedTextMessage: &waE2E.ExtendedTextMessage{
 					Text: proto.String("Hello World!!!"),
 				},
 			},

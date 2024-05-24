@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types/events"
 	"google.golang.org/protobuf/proto"
 )
@@ -29,7 +29,7 @@ func (a *GetSavedTextAction) Execute(ctx context.Context, evt *events.Message) e
 		return nil
 	}
 
-	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
+	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &waE2E.Message{
 		Conversation: proto.String(savedText.Content),
 	})
 	if err != nil {

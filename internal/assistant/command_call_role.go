@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types/events"
 	"google.golang.org/protobuf/proto"
 )
@@ -31,11 +31,11 @@ func (a *CallRoleAction) Execute(ctx context.Context, evt *events.Message) error
 	}
 
 	message := proto.String(strings.Join(mentionText, " "))
-	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
-		ExtendedTextMessage: &whatsmeow_proto.ExtendedTextMessage{
+	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &waE2E.Message{
+		ExtendedTextMessage: &waE2E.ExtendedTextMessage{
 			Text: message,
-			ContextInfo: &whatsmeow_proto.ContextInfo{
-				MentionedJid: roles.MemberJIDs,
+			ContextInfo: &waE2E.ContextInfo{
+				MentionedJID: roles.MemberJIDs,
 			},
 		},
 	})

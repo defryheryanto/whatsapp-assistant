@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	whatsmeow_proto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types/events"
 	"google.golang.org/protobuf/proto"
 )
@@ -31,7 +31,7 @@ func (a *SaveBirthdayAction) Execute(ctx context.Context, evt *events.Message) e
 		return err
 	}
 	if existingBirthday != nil {
-		_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
+		_, err = a.client.SendMessage(ctx, evt.Info.Chat, &waE2E.Message{
 			Conversation: proto.String(
 				fmt.Sprintf(
 					"%s's birthday is already set on %s",
@@ -58,7 +58,7 @@ func (a *SaveBirthdayAction) Execute(ctx context.Context, evt *events.Message) e
 		return err
 	}
 
-	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &whatsmeow_proto.Message{
+	_, err = a.client.SendMessage(ctx, evt.Info.Chat, &waE2E.Message{
 		Conversation: proto.String(fmt.Sprintf(
 			"saved %s birthday on %s",
 			strings.ToUpper(newBirthday.Name),

@@ -17,6 +17,12 @@ Your WhatsApp Assistant
 3. Install [Golang Migrate CLI](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#migrate-cli)
 4. Run `go install -tags 'sqlite3' github.com/golang-migrate/migrate/v4/cmd/migrate@latest`
 
+### GCC Install
+1. Head to [WinLibs](https://winlibs.com/)
+2. Go to download page and download the archive without LLVM
+3. Extract and Add the bin folder to the environment variabbles
+4. Verify installation by executing `gcc -v` in a new command promp tab
+
 ### Running the application
 1. Clone the repository
 2. Run `go run ./db/migrate.go`
