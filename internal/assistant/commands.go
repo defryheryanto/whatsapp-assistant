@@ -40,7 +40,7 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 		},
 		COMMAND_ASSIGN_ROLE: {
 			Format:      fmt.Sprintf("%s [role name] [@member1 @member2 @member3 ...]", commandFormat(COMMAND_ASSIGN_ROLE)),
-			Description: "Assign role to mentioned members",
+			Description: "Assign role to mentioned members. To add mention to yourself, use @self",
 			Action: &AssignRoleAction{
 				WhatsAppAssistant: wa,
 				Command:           commandFormat(COMMAND_ASSIGN_ROLE),

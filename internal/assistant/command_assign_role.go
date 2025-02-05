@@ -44,10 +44,15 @@ func (a *AssignRoleAction) Execute(ctx context.Context, evt *events.Message) err
 		}
 	}
 
+	mentionedJIDs := evt.Message.GetExtendedTextMessage().GetContextInfo().GetMentionedJID()
+	if a.isSelfMention(evt) {
+		mentionedJIDs = append(mentionedJIDs, evt.Info.Sender.ToNonAD().String())
+	}
+
 	err = a.repository.InsertRole(ctx, &Role{
 		Name:       roleName,
 		GroupJid:   groupJid,
-		MemberJIDs: evt.Message.GetExtendedTextMessage().GetContextInfo().GetMentionedJid(),
+		MemberJIDs: mentionedJIDs,
 	})
 	if err != nil {
 		return err
@@ -85,4 +90,20 @@ func (a *AssignRoleAction) extractRoleName(evt *events.Message) string {
 	}
 
 	return roleName
+}
+
+func (a *AssignRoleAction) isSelfMention(evt *events.Message) bool {
+	message := getMessage(evt)
+
+	words := strings.FieldsFunc(message, func(r rune) bool {
+		return r == '\n' || r == ' '
+	})
+
+	for _, word := range words {
+		if strings.Contains(word, "@self") {
+			return true
+		}
+	}
+
+	return false
 }

@@ -18,6 +18,7 @@ func main() {
 	downFlag := flag.Bool("down", false, "database migration down")
 	flag.Parse()
 
+	fmt.Println("opening connection..")
 	db, err := sql.Open("sqlite3", fmt.Sprintf("%s/whatsapp_assistant.db", getAppRootDirectory()))
 	if err != nil {
 		panic(err)
@@ -29,6 +30,7 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("reading migration files")
 	fSrc, err := (&file.File{}).Open("./db/migrations")
 	if err != nil {
 		panic(err)
