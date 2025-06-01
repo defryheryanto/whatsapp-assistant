@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -8,12 +9,12 @@ import (
 	"go.mau.fi/whatsmeow/store/sqlstore"
 )
 
-func setupWhatsmeowClient(sqlitePath string) (*whatsmeow.Client, error) {
-	container, err := sqlstore.New("sqlite3", fmt.Sprintf("file:%s?_foreign_keys=on", sqlitePath), nil)
+func setupWhatsmeowClient(ctx context.Context, sqlitePath string) (*whatsmeow.Client, error) {
+	container, err := sqlstore.New(ctx, "sqlite3", fmt.Sprintf("file:%s?_foreign_keys=on", sqlitePath), nil)
 	if err != nil {
 		return nil, fmt.Errorf("error initializing sqlite: %v", err)
 	}
-	deviceStore, err := container.GetFirstDevice()
+	deviceStore, err := container.GetFirstDevice(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error getting device: %v", err)
 	}

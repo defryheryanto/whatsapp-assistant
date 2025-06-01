@@ -16,7 +16,7 @@ func main() {
 		panic(fmt.Sprintf("failed to connect to database: %v", err))
 	}
 
-	client, err := setupWhatsmeowClient(fmt.Sprintf("%s/whatsmeow.db", getAppRootDirectory()))
+	client, err := setupWhatsmeowClient(context.Background(), fmt.Sprintf("%s/whatsmeow.db", getAppRootDirectory()))
 	if err != nil {
 		panic(fmt.Sprintf("failed to setup whatsmeow client: %v", err))
 	}
