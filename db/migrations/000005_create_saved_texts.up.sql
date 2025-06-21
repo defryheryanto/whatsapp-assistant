@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS saved_texts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     group_jid TEXT NOT NULL,
     title TEXT NOT NULL,
     content TEXT NOT NULL

@@ -9,7 +9,7 @@ import (
 
 	_ "github.com/golang-migrate/migrate/source"
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/sqlite3"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/mattes/migrate/source/file"
 )
@@ -19,13 +19,17 @@ func main() {
 	flag.Parse()
 
 	fmt.Println("opening connection..")
-	db, err := sql.Open("sqlite3", fmt.Sprintf("%s/whatsapp_assistant.db", getAppRootDirectory()))
+	dsn := os.Getenv("POSTGRES_DSN")
+	if dsn == "" {
+		dsn = "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"
+	}
+	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
 
-	instance, err := sqlite3.WithInstance(db, &sqlite3.Config{})
+	instance, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		panic(err)
 	}
@@ -36,7 +40,7 @@ func main() {
 		panic(err)
 	}
 
-	m, err := migrate.NewWithInstance("file", fSrc, "sqlite3", instance)
+	m, err := migrate.NewWithInstance("file", fSrc, "postgres", instance)
 	if err != nil {
 		panic(err)
 	}

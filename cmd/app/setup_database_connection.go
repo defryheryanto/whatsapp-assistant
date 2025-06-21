@@ -1,15 +1,30 @@
 package main
 
 import (
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
+        "os"
+
+        "gorm.io/driver/postgres"
+        "gorm.io/gorm"
 )
 
-func setupSQLiteConnection(path string) (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open(path))
-	if err != nil {
-		return nil, err
-	}
+func setupPostgresConnection() (*gorm.DB, error) {
+        dsn := os.Getenv("POSTGRES_DSN")
+        if dsn == "" {
+                dsn = "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"
+        }
 
-	return db, nil
+        db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+        if err != nil {
+                return nil, err
+        }
+
+        sqlDB, err := db.DB()
+        if err != nil {
+                return nil, err
+        }
+        if err := sqlDB.Ping(); err != nil {
+                return nil, err
+        }
+
+        return db, nil
 }

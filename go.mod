@@ -5,12 +5,11 @@ go 1.23.0
 toolchain go1.23.4
 
 require (
-	github.com/mattn/go-sqlite3 v1.14.28
-	github.com/onsi/gomega v1.27.8
-	go.mau.fi/whatsmeow v0.0.0-20250530091404-0da7ff77db31
-	google.golang.org/protobuf v1.36.6
-	gorm.io/driver/sqlite v1.5.2
-	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
+        github.com/onsi/gomega v1.27.8
+        go.mau.fi/whatsmeow v0.0.0-20250530091404-0da7ff77db31
+        google.golang.org/protobuf v1.36.6
+        gorm.io/driver/postgres v1.5.2
+        gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
 )
 
 require (
