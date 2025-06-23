@@ -25,7 +25,7 @@ Your WhatsApp Assistant
 
 ### Running the application
 1. Clone the repository
-2. Set `POSTGRES_DSN` environment variable (optional, default `postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable`)
+2. Copy and set the environment (see .env.example)
 3. Run `go run ./db/migrate.go`
 4. Run `go run ./cmd/app/...` from the root project path
 5. Copy the QRCode text from the terminal
