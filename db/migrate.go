@@ -4,12 +4,11 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"os"
-	"regexp"
 
+	"github.com/defryheryanto/whatsapp-assistant/config"
 	_ "github.com/golang-migrate/migrate/source"
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/sqlite3"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/mattes/migrate/source/file"
 )
@@ -18,14 +17,15 @@ func main() {
 	downFlag := flag.Bool("down", false, "database migration down")
 	flag.Parse()
 
+	config.Init()
 	fmt.Println("opening connection..")
-	db, err := sql.Open("sqlite3", fmt.Sprintf("%s/whatsapp_assistant.db", getAppRootDirectory()))
+	db, err := sql.Open("postgres", config.DatabaseConnectionString)
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
 
-	instance, err := sqlite3.WithInstance(db, &sqlite3.Config{})
+	instance, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		panic(err)
 	}
@@ -36,7 +36,7 @@ func main() {
 		panic(err)
 	}
 
-	m, err := migrate.NewWithInstance("file", fSrc, "sqlite3", instance)
+	m, err := migrate.NewWithInstance("file", fSrc, "postgres", instance)
 	if err != nil {
 		panic(err)
 	}
@@ -56,12 +56,4 @@ func main() {
 		version, _, _ := m.Version()
 		fmt.Printf("Migrate complete (version %d)\n", version)
 	}
-}
-
-func getAppRootDirectory() string {
-	projectName := regexp.MustCompile(`^(.*whatsapp-assistant)`)
-	currentWorkDirectory, _ := os.Getwd()
-	rootPath := projectName.Find([]byte(currentWorkDirectory))
-
-	return string(rootPath)
 }

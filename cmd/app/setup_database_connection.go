@@ -1,13 +1,22 @@
 package main
 
 import (
-	"gorm.io/driver/sqlite"
+	"github.com/defryheryanto/whatsapp-assistant/config"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func setupSQLiteConnection(path string) (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open(path))
+func setupPostgresConnection() (*gorm.DB, error) {
+	db, err := gorm.Open(postgres.Open(config.DatabaseConnectionString), &gorm.Config{})
 	if err != nil {
+		return nil, err
+	}
+
+	sqlDB, err := db.DB()
+	if err != nil {
+		return nil, err
+	}
+	if err := sqlDB.Ping(); err != nil {
 		return nil, err
 	}
 

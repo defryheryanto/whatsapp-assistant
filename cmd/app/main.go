@@ -6,12 +6,14 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/defryheryanto/whatsapp-assistant/config"
 	"github.com/defryheryanto/whatsapp-assistant/internal/assistant"
 	assistant_repository "github.com/defryheryanto/whatsapp-assistant/internal/assistant/repository/gorm"
 )
 
 func main() {
-	gormDB, err := setupSQLiteConnection(fmt.Sprintf("%s/whatsapp_assistant.db", getAppRootDirectory()))
+	config.Init()
+	gormDB, err := setupPostgresConnection()
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to database: %v", err))
 	}
