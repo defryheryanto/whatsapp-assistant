@@ -5,3 +5,4 @@ cmd/app/__debug_bin.exe
 cmd/test
 /logs
 whatsapp-assistant
+.env

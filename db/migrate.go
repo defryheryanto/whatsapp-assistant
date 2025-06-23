@@ -4,9 +4,8 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"os"
-	"regexp"
 
+	"github.com/defryheryanto/whatsapp-assistant/config"
 	_ "github.com/golang-migrate/migrate/source"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -18,12 +17,9 @@ func main() {
 	downFlag := flag.Bool("down", false, "database migration down")
 	flag.Parse()
 
+	config.Init()
 	fmt.Println("opening connection..")
-	dsn := os.Getenv("POSTGRES_DSN")
-	if dsn == "" {
-		dsn = "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"
-	}
-	db, err := sql.Open("postgres", dsn)
+	db, err := sql.Open("postgres", config.DatabaseConnectionString)
 	if err != nil {
 		panic(err)
 	}
@@ -60,12 +56,4 @@ func main() {
 		version, _, _ := m.Version()
 		fmt.Printf("Migrate complete (version %d)\n", version)
 	}
-}
-
-func getAppRootDirectory() string {
-	projectName := regexp.MustCompile(`^(.*whatsapp-assistant)`)
-	currentWorkDirectory, _ := os.Getwd()
-	rootPath := projectName.Find([]byte(currentWorkDirectory))
-
-	return string(rootPath)
 }

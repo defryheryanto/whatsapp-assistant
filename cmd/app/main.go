@@ -6,22 +6,24 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/defryheryanto/whatsapp-assistant/config"
 	"github.com/defryheryanto/whatsapp-assistant/internal/assistant"
-    assistant_repository "github.com/defryheryanto/whatsapp-assistant/internal/assistant/repository/gorm"
+	assistant_repository "github.com/defryheryanto/whatsapp-assistant/internal/assistant/repository/gorm"
 )
 
 func main() {
-    gormDB, err := setupPostgresConnection()
-    if err != nil {
-        panic(fmt.Sprintf("failed to connect to database: %v", err))
-    }
+	config.Init()
+	gormDB, err := setupPostgresConnection()
+	if err != nil {
+		panic(fmt.Sprintf("failed to connect to database: %v", err))
+	}
 
 	client, err := setupWhatsmeowClient(context.Background(), fmt.Sprintf("%s/whatsmeow.db", getAppRootDirectory()))
 	if err != nil {
 		panic(fmt.Sprintf("failed to setup whatsmeow client: %v", err))
 	}
 
-    whatsappAssistantRepository := assistant_repository.NewWhatsAppAssistantRepository(gormDB)
+	whatsappAssistantRepository := assistant_repository.NewWhatsAppAssistantRepository(gormDB)
 	whatsappAssistant := assistant.NewWhatsAppAssistant(client, whatsappAssistantRepository)
 	whatsappAssistant.Start(context.Background())
 }
