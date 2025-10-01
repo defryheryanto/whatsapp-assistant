@@ -66,7 +66,7 @@ func (r *BirthdayReminder) Run(ctx context.Context) error {
 			continue
 		}
 
-		message, err := r.getBirthdayMessage(birthday, chatJid)
+		message, err := r.getBirthdayMessage(ctx, birthday, chatJid)
 		if err != nil {
 			log.Printf("error getting message: %v\n", err)
 		}
@@ -80,11 +80,11 @@ func (r *BirthdayReminder) Run(ctx context.Context) error {
 	return nil
 }
 
-func (r *BirthdayReminder) getBirthdayMessage(birthday *Birthday, chatJid types.JID) (*waE2E.Message, error) {
+func (r *BirthdayReminder) getBirthdayMessage(ctx context.Context, birthday *Birthday, chatJid types.JID) (*waE2E.Message, error) {
 	age := time.Now().Year() - int(birthday.BirthYear)
 	basicMessage := fmt.Sprintf("%s turning %d today!", birthday.Name, age)
 
-	isGroup, err := r.isGroup(chatJid)
+	isGroup, err := r.isGroup(ctx, chatJid)
 	if err != nil {
 		return nil, err
 	}
@@ -109,8 +109,8 @@ func (r *BirthdayReminder) getBirthdayMessage(birthday *Birthday, chatJid types.
 	}, nil
 }
 
-func (r *BirthdayReminder) isGroup(chatJid types.JID) (bool, error) {
-	joinedGroups, err := r.client.GetJoinedGroups()
+func (r *BirthdayReminder) isGroup(ctx context.Context, chatJid types.JID) (bool, error) {
+	joinedGroups, err := r.client.GetJoinedGroups(ctx)
 	if err != nil {
 		return false, err
 	}
