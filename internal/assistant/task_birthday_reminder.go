@@ -94,7 +94,7 @@ func (r *BirthdayReminder) getBirthdayMessage(ctx context.Context, birthday *Bir
 		}, nil
 	}
 
-	mentionText, mentionedJid, err := r.mentionAll(chatJid)
+	mentionText, mentionedJid, err := r.mentionAll(ctx, chatJid)
 	if err != nil {
 		return nil, err
 	}
@@ -123,8 +123,8 @@ func (r *BirthdayReminder) isGroup(ctx context.Context, chatJid types.JID) (bool
 	return false, nil
 }
 
-func (r *BirthdayReminder) mentionAll(chatJid types.JID) (mentionText string, mentionedJid []string, err error) {
-	groupInfo, err := r.client.GetGroupInfo(chatJid)
+func (r *BirthdayReminder) mentionAll(ctx context.Context, chatJid types.JID) (mentionText string, mentionedJid []string, err error) {
+	groupInfo, err := r.client.GetGroupInfo(ctx, chatJid)
 	if err != nil {
 		return "", nil, err
 	}

@@ -19,7 +19,7 @@ func (a *CallEveryoneAction) Execute(ctx context.Context, evt *events.Message) e
 		return nil
 	}
 
-	groupInfo, err := a.client.GetGroupInfo(evt.Info.Chat)
+	groupInfo, err := a.client.GetGroupInfo(ctx, evt.Info.Chat)
 	if err != nil {
 		return err
 	}
