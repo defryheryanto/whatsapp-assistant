@@ -24,6 +24,7 @@ const (
 	COMMAND_GET_TEXT      = "text"
 	COMMAND_SAVE_BIRTHDAY = "birthday"
 	COMMAND_LIST_BIRTHDAY = "birthdaylist"
+	COMMAND_WHOAMI        = "whoami"
 )
 
 type commandAction interface {
@@ -102,6 +103,14 @@ func (wa *WhatsAppAssistant) getCommands() map[string]*Command {
 				WhatsAppAssistant: wa,
 			},
 			IsPrivate: false,
+		},
+		COMMAND_WHOAMI: {
+			Format:      commandFormat(COMMAND_WHOAMI),
+			Description: "Get your JID",
+			Action: &WhoAmIAction{
+				WhatsAppAssistant: wa,
+			},
+			IsPrivate: true,
 		},
 	}
 }
